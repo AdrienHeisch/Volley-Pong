@@ -4,8 +4,22 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
+        <link rel="manifest" href="manifest.json">
+        <title>Volley Pong !</title>
         <link rel="stylesheet" href="css/style.css">
+
+        <script>
+            if('serviceWorker' in navigator) {
+                navigator.serviceWorker
+                .register('./sw.js')
+                .then(function() {
+                    console.log("Service Worker registered successfully");
+                })
+                .catch(function() {
+                    console.log("Service worker registration failed")
+                });
+            }
+        </script>
 
         <script src="./socket.io/socket.io.js"></script>
         <script src="./scripts/libs/ahUtils.js"></script>
