@@ -40,7 +40,7 @@
         }
     ],
     "display": "fullscreen",
-    "orientation": "any",
+    "orientation": "landscape",
     "start_url": "./",
     "background_color": "#bfb9f3"
 }
