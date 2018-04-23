@@ -32,7 +32,7 @@ socket.on('initClient', params => {
             .height(window.innerHeight)
             .width(window.innerHeight * gameCanvas.width / gameCanvas.height)
             .offset({
-                left: window.innerHeight - $(gameCanvas).width() / 2
+                left: window.innerWidth / 2 - $(gameCanvas).width() / 2
             });
     }
 });
