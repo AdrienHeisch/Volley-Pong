@@ -1,8 +1,42 @@
+hmtl, body {
+    overflow: hidden;
+    margin: 0;
+}
+
+body {
+  position: relative;
+}
+
 #gameCanvas {
-    border: solid black 1px;/*
     position: absolute;
-    left: 10vw;
-    top: 10vh;
-    width: 80vw;
-    height: 80vh;*/
+    left: 0;
+    top: -1px;
+    border: solid black 1px;
+}
+
+#rotateDeviceImg {
+    position: absolute;
+    width: 50vw;
+    left: 25vw;
+    top: calc(50vh - 25vw);
+}
+
+@media (orientation: landscape), (hover: hover) {
+    #gameCanvas {
+        display: unset;
+    }
+
+    #rotateDeviceImg {
+        display: none;
+    }
+}
+
+@media (orientation: portrait) and (hover: none) {
+    #gameCanvas {
+        display: none;
+    }
+
+    #rotateDeviceImg {
+        display: unset;
+    }
 }

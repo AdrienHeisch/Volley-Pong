@@ -40,7 +40,10 @@ Player.prototype.beforePositionChange = function() {
 
     if (this.y >= World.size.height - this.height / 2) {
         if (this.input.up) this.velocity.y = -Player.jumpSpeed;
-        else this.velocity.y = 0;
+        else {
+            this.velocity.y = 0;
+            this.y = World.size.height - this.height / 2
+        }
     }
     this.velocity.x = (this.input.left ? -Player.hSpeed : 0) + (this.input.right ? Player.hSpeed : 0);
     if (!this.isRightSide && (this.x + this.width / 2 >= World.size.width / 2 - 10 && this.velocity.x > 0) || (this.x - this.width / 2 <= 0 && this.velocity.x < 0)
