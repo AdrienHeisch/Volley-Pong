@@ -27,6 +27,7 @@ function panHandler(e) {
 }
 
 function tapHandler(e) {
+    console.log('TAP')
     TouchManager.up = true;
     setTimeout(() => TouchManager.up = false, 50);
 }
