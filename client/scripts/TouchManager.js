@@ -2,9 +2,7 @@ export const TouchManager = {
     init() {
         var hammer = new Hammer.Manager(window);
         hammer.add(new Hammer.Pan({direction: Hammer.DIRECTION_ALL, threshold: 0}));
-        hammer.add(new Hammer.Tap({}));
         hammer.on('pan', panHandler);
-        hammer.on('tap', tapHandler);
         $(window).on('touchend', mouseUpHandler);
     },
 
@@ -14,23 +12,25 @@ export const TouchManager = {
 }
 
 function panHandler(e) {
-    switch (e.additionalEvent) {
-        case 'panleft':
-            TouchManager.right = false;
-            TouchManager.left = true;
-            break;
-        case 'panright':
-            TouchManager.left = false;
-            TouchManager.right = true;
-            break;
+    console.log(e.velocityX, e.velocityY)
+    if (e.velocityX > 0.1) {
+        TouchManager.left = false;
+        TouchManager.right = true;
+    } else if (e.velocityX < -0.1) {
+        TouchManager.right = false;
+        TouchManager.left = true;
+    } else {
+        TouchManager.right = false;
+        TouchManager.left = false; 
+    }
+
+    if (e.velocityY < 0) {
+        TouchManager.up = true;
+        setTimeout(() => TouchManager.up = false, 50);
     }
 }
 
-function tapHandler(e) {
-    console.log('TAP')
-    TouchManager.up = true;
-    setTimeout(() => TouchManager.up = false, 50);
-}
+function tapHandler() {}
 
 function mouseUpHandler(e) {
     TouchManager.left = false;
