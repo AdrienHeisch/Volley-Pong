@@ -39,7 +39,7 @@ Net.prototype.getDrawInstructions = function() {
 }
 
 Net.normalHeight = 75;
-Net.normalWidth = 1;
+Net.normalWidth = 3;
 Net.resitution = 0.9;
 
 module.exports = Net;
