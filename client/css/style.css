@@ -10,7 +10,6 @@ body {
 
 #gameCanvas {
     position: absolute;
-    /* border: solid black 1px; */
     background-color: white;
 }
 
@@ -21,7 +20,7 @@ body {
     top: calc(50vh - 25vw);
 }
 
-@media (orientation: landscape), (hover: hover) {
+@media (orientation: landscape), (pointer: fine) {
     #gameCanvas {
         display: unset;
     }
@@ -31,7 +30,7 @@ body {
     }
 }
 
-@media (orientation: portrait) and (hover: none) {
+@media (orientation: portrait) and (pointer: coarse) {
     #gameCanvas {
         display: none;
     }

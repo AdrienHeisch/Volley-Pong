@@ -13,10 +13,10 @@ export const TouchManager = {
 
 function panHandler(e) {
     console.log(e.velocityX, e.velocityY)
-    if (e.velocityX > 0.1) {
+    if (e.velocityX > 0.05) {
         TouchManager.left = false;
         TouchManager.right = true;
-    } else if (e.velocityX < -0.1) {
+    } else if (e.velocityX < -0.05) {
         TouchManager.right = false;
         TouchManager.left = true;
     } else {
@@ -24,7 +24,7 @@ function panHandler(e) {
         TouchManager.left = false; 
     }
 
-    if (e.velocityY < 0) {
+    if (e.velocityY < -0.05) {
         TouchManager.up = true;
         setTimeout(() => TouchManager.up = false, 50);
     }

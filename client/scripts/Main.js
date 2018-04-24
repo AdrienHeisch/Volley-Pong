@@ -6,14 +6,14 @@ const MARGIN = 0.02;
 let gameRatio;
 let getInput;
 
-if (window.matchMedia("(hover: hover)").matches) {
+if (window.matchMedia("(pointer: fine)").matches) {
     KeyboardManager.init();
     getInput = () => ({
         up: KeyboardManager.checkKey(90),
         left: KeyboardManager.checkKey(81),
         right: KeyboardManager.checkKey(68)
     });
-} else if (window.matchMedia("(hover: none)").matches) {
+} else if (window.matchMedia("(pointer: coarse)").matches) {
     TouchManager.init();
     getInput = () => ({
         up: TouchManager.up,
