@@ -1,36 +1,71 @@
 export const TouchManager = {
-    init() {
-        var hammer = new Hammer.Manager(window);
-        hammer.add(new Hammer.Pan({direction: Hammer.DIRECTION_ALL, threshold: 0}));
-        hammer.on('pan', panHandler);
-        $(window).on('touchend', mouseUpHandler);
+    init(htmlElement) {
+        target = htmlElement;
+        $(target).on('touchstart', touchStartHandler);
+        $(target).on('touchend', touchEndHandler);
     },
 
-    left: false,
-    right: false,
+    get left() { return joystickDelta.x < 0; },
+    get right() { return joystickDelta.x > 0; },
     up: false
 }
 
-function panHandler(e) {
-    console.log(e.velocityX, e.velocityY)
-    if (e.velocityX > 0.05) {
-        TouchManager.left = false;
-        TouchManager.right = true;
-    } else if (e.velocityX < -0.05) {
-        TouchManager.right = false;
-        TouchManager.left = true;
-    } else {
-        TouchManager.right = false;
-        TouchManager.left = false; 
-    }
+let target;
 
-    if (e.velocityY < -0.05) {
+let leftTouchId;
+let rightTouchId;
+
+let joystickCenter;
+let joystickDelta;
+
+resetJoystick();
+
+function touchStartHandler(e) {
+    let newTouch = e.changedTouches[0];
+    if (newTouch.clientX < window.innerWidth / 2) {
+        if (leftTouchId !== undefined && e.touches.length > 0) return;
+        leftTouchId = newTouch.identifier;
+        joystickCenter.x = newTouch.clientX;
+        joystickCenter.y = newTouch.clientY;
+        $(target).on('touchmove', touchMoveHandler);
+    } else {
+        if (rightTouchId !== undefined && e.touches.length > 0) return;
+        rightTouchId = newTouch.identifier;
         TouchManager.up = true;
-        setTimeout(() => TouchManager.up = false, 50);
+    }
+    
+}
+
+function touchMoveHandler(e) {
+    console.log(e.touches)
+    let leftTouch = e.touches[leftTouchId];
+    joystickDelta.x = leftTouch.clientX - joystickCenter.x;
+    joystickDelta.y =  leftTouch.clientY - joystickCenter.y;
+}
+
+function touchEndHandler(e) {
+    if (e.changedTouches[0].identifier === leftTouchId) {
+        leftTouchId = undefined;
+        resetJoystick();
+        $(target).off('touchmove', touchMoveHandler);
+    } else if (e.changedTouches[0].identifier === rightTouchId) {
+        rightTouchId = undefined;
+        TouchManager.up = false;
     }
 }
 
-function tapHandler() {}
+function resetJoystick() {
+    joystickDelta = { x: 0, y: 0 };
+    joystickCenter = { x: undefined, y: undefined };
+}
+
+/*function findLeftTouch(event) {
+    for (let touch in event.touches) {
+        if (touch.identifier === leftTouchId) return touch;
+    }
+    console.log("No touch was find for id", leftTouchId, ".")
+    return undefined;
+}*/
 
 function mouseUpHandler(e) {
     TouchManager.left = false;

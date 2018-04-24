@@ -2,6 +2,9 @@ import {KeyboardManager} from './KeyboardManager.js';
 import {TouchManager} from './TouchManager.js';
 import * as Drawers from './Drawers.js';
 
+const gameCanvas = $('#gameCanvas')[0];
+const ctx = gameCanvas.getContext('2d');
+
 const MARGIN = 0.02;
 let gameRatio;
 let getInput;
@@ -14,7 +17,7 @@ if (window.matchMedia("(pointer: fine)").matches) {
         right: KeyboardManager.checkKey(68)
     });
 } else if (window.matchMedia("(pointer: coarse)").matches) {
-    TouchManager.init();
+    TouchManager.init(gameCanvas);
     getInput = () => ({
         up: TouchManager.up,
         left: TouchManager.left,
@@ -23,8 +26,6 @@ if (window.matchMedia("(pointer: fine)").matches) {
 } else getInput = () => {};
 
 const socket = io.connect(window.location.href);
-const gameCanvas = $('#gameCanvas')[0];
-const ctx = gameCanvas.getContext('2d');
 
 socket.on('initClient', params => {
     if (params.canvasSize !== undefined) {
