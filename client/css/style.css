@@ -5,13 +5,13 @@ hmtl, body {
 
 body {
   position: relative;
+  background-color: gray;
 }
 
 #gameCanvas {
     position: absolute;
-    left: 0;
-    top: -1px;
-    border: solid black 1px;
+    /* border: solid black 1px; */
+    background-color: white;
 }
 
 #rotateDeviceImg {

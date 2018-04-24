@@ -50,7 +50,7 @@ Game.prototype.addPlayer = function(socket) {
         x: (function() {
             if (this.players[this.players.length - 1] === undefined) return Player.xDistanceFromBorder;
             return (this.players[this.players.length - 1].isRightSide ? Player.xDistanceFromBorder : World.size.width - Player.xDistanceFromBorder);
-        }).apply(this),
+        }).call(this),
         ballsList: this.balls
     });
     socket.player = player;

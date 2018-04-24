@@ -2,7 +2,9 @@ import {KeyboardManager} from './KeyboardManager.js';
 import {TouchManager} from './TouchManager.js';
 import * as Drawers from './Drawers.js';
 
-var getInput;
+const MARGIN = 0.02;
+let gameRatio;
+let getInput;
 
 if (window.matchMedia("(hover: hover)").matches) {
     KeyboardManager.init();
@@ -28,25 +30,17 @@ socket.on('initClient', params => {
     if (params.canvasSize !== undefined) {
         gameCanvas.width = params.canvasSize.width;
         gameCanvas.height = params.canvasSize.height;
-        $(gameCanvas)
-            .height(window.innerHeight)
-            .width(window.innerHeight * gameCanvas.width / gameCanvas.height)
-            .offset({
-                left: window.innerWidth / 2 - $(gameCanvas).width() / 2
-            });
+        gameRatio = gameCanvas.width / gameCanvas.height;
+        onResize();
     }
 });
 
-setInterval(function() {
-    socket.emit('userInput', getInput());
-}, 50);
+setInterval(() => socket.emit('userInput', getInput()), 50);
 
-let gameState = {
-    drawInstructions: []
-};
+let gameState = { drawInstructions: [] };
 socket.on('stateRefresh', state => gameState = state);
 
-let draw = function() {
+function draw() {
     ctx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
 
     let drawInstruction;
@@ -58,6 +52,34 @@ let draw = function() {
     requestAnimationFrame(draw);
 }
 draw();
+
+function onResize() {
+    if (gameRatio === undefined) {
+        $(gameCanvas).width(0).height(0);
+        return;
+    }
+    let windowRatio = window.innerWidth / window.innerHeight;
+    if (windowRatio > gameRatio) {
+        let margin = window.innerHeight * MARGIN;
+        $(gameCanvas)
+        .height(window.innerHeight - 2 * margin)
+        .width(window.innerHeight * gameRatio)
+        .offset({
+            left: window.innerWidth / 2 - $(gameCanvas).width() / 2,
+            top: margin
+        });
+    } else {
+        let margin = window.innerWidth * MARGIN;
+        $(gameCanvas)
+        .width(window.innerWidth - 2 * margin)
+        .height(window.innerWidth / gameRatio)
+        .offset({
+            left: margin,
+            top: window.innerHeight / 2 - $(gameCanvas).height() / 2
+        });
+    }
+}
+$(window).resize(onResize).resize();
 
 // function toggleFullScreen(element) {
 //     if (!document.mozFullScreen && !document.webkitFullScreen) {
