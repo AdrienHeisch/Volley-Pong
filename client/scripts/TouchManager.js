@@ -18,6 +18,8 @@ let rightTouchId;
 let joystickCenter;
 let joystickDelta;
 
+let iosBugfix = 0;
+
 resetJoystick();
 
 function touchStartHandler(e) {
@@ -25,6 +27,8 @@ function touchStartHandler(e) {
     if (newTouch.clientX < window.innerWidth / 2) {
         if (leftTouchId !== undefined && e.touches.length > 0) return;
         leftTouchId = newTouch.identifier;
+        if (leftTouchId < 0 && iosBugfix === 0) iosBugfix = -leftTouchId;;
+        leftTouchId += iosBugfix;
         joystickCenter.x = newTouch.clientX;
         joystickCenter.y = newTouch.clientY;
         $(target).on('touchmove', touchMoveHandler);
@@ -37,7 +41,6 @@ function touchStartHandler(e) {
 }
 
 function touchMoveHandler(e) {
-    console.log(e.touches)
     let leftTouch = e.touches[leftTouchId];
     joystickDelta.x = leftTouch.clientX - joystickCenter.x;
     joystickDelta.y =  leftTouch.clientY - joystickCenter.y;
