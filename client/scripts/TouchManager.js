@@ -5,8 +5,8 @@ export const TouchManager = {
         $(target).on('touchend', touchEndHandler);
     },
 
-    get left() { return joystickDelta.x < 0; },
-    get right() { return joystickDelta.x > 0; },
+    get left() { return joystickDelta.x < -joystickRadius; },
+    get right() { return joystickDelta.x > joystickRadius; },
     up: false
 }
 
@@ -15,6 +15,7 @@ let target;
 let leftTouchId;
 let rightTouchId;
 
+let joystickRadius = 75;
 let joystickCenter;
 let joystickDelta;
 
@@ -27,7 +28,7 @@ function touchStartHandler(e) {
     if (newTouch.clientX < window.innerWidth / 2) {
         if (leftTouchId !== undefined && e.touches.length > 0) return;
         leftTouchId = newTouch.identifier;
-        if (leftTouchId < 0 && iosBugfix === 0) iosBugfix = -leftTouchId;;
+        if (leftTouchId < 0) iosBugfix = -leftTouchId;
         leftTouchId += iosBugfix;
         joystickCenter.x = newTouch.clientX;
         joystickCenter.y = newTouch.clientY;
@@ -37,7 +38,6 @@ function touchStartHandler(e) {
         rightTouchId = newTouch.identifier;
         TouchManager.up = true;
     }
-    
 }
 
 function touchMoveHandler(e) {
@@ -47,7 +47,8 @@ function touchMoveHandler(e) {
 }
 
 function touchEndHandler(e) {
-    if (e.changedTouches[0].identifier === leftTouchId) {
+    $("#end").text(e.changedTouches[0].identifier + " " + (leftTouchId - iosBugfix))
+    if (e.changedTouches[0].identifier === leftTouchId - iosBugfix) {
         leftTouchId = undefined;
         resetJoystick();
         $(target).off('touchmove', touchMoveHandler);
@@ -61,14 +62,6 @@ function resetJoystick() {
     joystickDelta = { x: 0, y: 0 };
     joystickCenter = { x: undefined, y: undefined };
 }
-
-/*function findLeftTouch(event) {
-    for (let touch in event.touches) {
-        if (touch.identifier === leftTouchId) return touch;
-    }
-    console.log("No touch was find for id", leftTouchId, ".")
-    return undefined;
-}*/
 
 function mouseUpHandler(e) {
     TouchManager.left = false;
