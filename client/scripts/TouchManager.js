@@ -47,7 +47,6 @@ function touchMoveHandler(e) {
 }
 
 function touchEndHandler(e) {
-    $("#end").text(e.changedTouches[0].identifier + " " + (leftTouchId - iosBugfix))
     if (e.changedTouches[0].identifier === leftTouchId - iosBugfix) {
         leftTouchId = undefined;
         resetJoystick();
