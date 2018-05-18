@@ -17,9 +17,9 @@ if (window.matchMedia("(pointer: fine)").matches) {
     mousePosition = { x: 0, y: 0 };
     window.onmousemove = e => mousePosition = { x: e.clientX - $(gameCanvas).offset().left, y: e.clientY - $(gameCanvas).offset().top };
     getInput = () => ({
-        up: KeyboardManager.checkKey(32) || KeyboardManager.checkKey(KeyboardManager.isAzerty ? 90 : 87),
-        left: KeyboardManager.checkKey(KeyboardManager.isAzerty ? 81 : 65),
-        right: KeyboardManager.checkKey(68)
+        up: KeyboardManager.checkKey(32) || KeyboardManager.checkKey(38) || KeyboardManager.checkKey(KeyboardManager.isAzerty ? 90 : 87),
+        left: KeyboardManager.checkKey(KeyboardManager.isAzerty ? 81 : 65) || KeyboardManager.checkKey(37),
+        right: KeyboardManager.checkKey(68) || KeyboardManager.checkKey(39)
     });
 } else if (window.matchMedia("(pointer: coarse)").matches) {
     TouchManager.init(gameCanvas);
