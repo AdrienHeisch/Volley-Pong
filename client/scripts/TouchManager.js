@@ -3,7 +3,16 @@ export const TouchManager = {
         target = htmlElement;
         $(target).on('touchstart', touchStartHandler);
         $(target).on('touchend', touchEndHandler);
+        TouchManager.isOn = true;
     },
+
+    stop() {
+        $(target).on('touchstart', touchStartHandler);
+        $(target).on('touchend', touchEndHandler);
+        TouchManager.isOn = false;
+    },
+
+    isOn: false,
 
     get left() { return joystickDelta.x < -joystickRadius; },
     get right() { return joystickDelta.x > joystickRadius; },

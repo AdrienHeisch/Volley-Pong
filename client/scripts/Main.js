@@ -8,12 +8,17 @@ const ctx = gameCanvas.getContext('2d');
 const MARGIN = 0.02;
 let gameRatio;
 let getInput;
+let mousePosition;
+let helpImg = $("#helpImg")[0];
+let keysImg = $("#keysImg")[0];
 
 if (window.matchMedia("(pointer: fine)").matches) {
-    KeyboardManager.init();
+    KeyboardManager.init()
+    mousePosition = { x: 0, y: 0 };
+    window.onmousemove = e => mousePosition = { x: e.clientX - $(gameCanvas).offset().left, y: e.clientY - $(gameCanvas).offset().top };
     getInput = () => ({
-        up: KeyboardManager.checkKey(90),
-        left: KeyboardManager.checkKey(81),
+        up: KeyboardManager.checkKey(32) || KeyboardManager.checkKey(KeyboardManager.isAzerty ? 90 : 87),
+        left: KeyboardManager.checkKey(KeyboardManager.isAzerty ? 81 : 65),
         right: KeyboardManager.checkKey(68)
     });
 } else if (window.matchMedia("(pointer: coarse)").matches) {
@@ -50,6 +55,15 @@ function draw() {
         Drawers[drawInstruction.type](ctx, drawInstruction);
     }
 
+    if (KeyboardManager.isOn) {
+        if (Math.sqrt((mousePosition.x - 17.5) * (mousePosition.x - 17.5) + (mousePosition.y - 17.5) * (mousePosition.y - 17.5)) < 12.5) {
+            ctx.drawImage(keysImg, 5, 5);
+            ctx.lineWidth = 1;
+            ctx.strokeText("You are in " + (KeyboardManager.isAzerty ? "azerty" : "qwerty") + " mode", 5, 15 + $(keysImg).height());
+        }
+        else ctx.drawImage(helpImg, 5, 5);
+    }
+
     requestAnimationFrame(draw);
 }
 draw();
@@ -81,19 +95,3 @@ function onResize() {
     }
 }
 $(window).resize(onResize).resize();
-
-// function toggleFullScreen(element) {
-//     if (!document.mozFullScreen && !document.webkitFullScreen) {
-//         if (element.mozRequestFullScreen) {
-//             element.mozRequestFullScreen();
-//         } else {
-//             element.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-//         }
-//     } else {
-//         if (document.mozCancelFullScreen) {
-//             document.mozCancelFullScreen();
-//         } else {
-//             document.webkitCancelFullScreen();
-//         }
-//     }
-// }

@@ -23,6 +23,14 @@ body {
     top: calc(50vh - 25vw);
 }
 
+#helpImg {
+    display: none;
+}
+
+#keysImg {
+    display: none;
+}
+
 @media (orientation: landscape), (pointer: fine) {
     #gameCanvas {
         display: unset;
