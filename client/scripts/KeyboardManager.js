@@ -8,7 +8,7 @@ export const KeyboardManager = {
     stop() {
         window.removeEventListener("keydown", KeyboardManager.registerKey, false);
         window.removeEventListener("keyup", KeyboardManager.unregisterKey, false);
-        KeyboardManager.isOn = true;
+        KeyboardManager.isOn = false;
     },
 
     switchMode() {
