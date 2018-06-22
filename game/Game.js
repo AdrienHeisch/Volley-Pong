@@ -23,7 +23,7 @@ Game.prototype.init = function() {
         y: World.size.height / 2
     });
 
-    ball.velocity.setTo(4, -1);
+    ball.velocity.setTo(-4, -1);
 
     this.balls.push(ball);
 

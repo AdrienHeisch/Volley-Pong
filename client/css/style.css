@@ -2,8 +2,11 @@ hmtl, body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    position: fixed;
     margin: 0;
+}
+
+html {
+    position: fixed;
 }
 
 body {
