@@ -12,7 +12,14 @@ let mousePosition;
 let helpImg = $("#helpImg")[0];
 let keysImg = $("#keysImg")[0];
 
-if (window.matchMedia("(pointer: fine)").matches) {
+if (window.matchMedia("screen and (max-width: 600px)").matches) {
+    TouchManager.init(gameCanvas);
+    getInput = () => ({
+        up: TouchManager.up,
+        left: TouchManager.left,
+        right: TouchManager.right
+    });
+} else {
     KeyboardManager.init()
     mousePosition = { x: 0, y: 0 };
     window.onmousemove = e => mousePosition = { x: e.clientX - $(gameCanvas).offset().left, y: e.clientY - $(gameCanvas).offset().top };
@@ -21,14 +28,7 @@ if (window.matchMedia("(pointer: fine)").matches) {
         left: KeyboardManager.checkKey(KeyboardManager.isAzerty ? 81 : 65) || KeyboardManager.checkKey(37),
         right: KeyboardManager.checkKey(68) || KeyboardManager.checkKey(39)
     });
-} else if (window.matchMedia("(pointer: coarse)").matches) {
-    TouchManager.init(gameCanvas);
-    getInput = () => ({
-        up: TouchManager.up,
-        left: TouchManager.left,
-        right: TouchManager.right
-    });
-} else getInput = () => {};
+}
 
 const socket = io.connect(window.location.href);
 
