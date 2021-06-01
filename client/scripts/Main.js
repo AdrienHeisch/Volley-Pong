@@ -12,7 +12,7 @@ let mousePosition;
 let helpImg = $("#helpImg")[0];
 let keysImg = $("#keysImg")[0];
 
-if (window.matchMedia("screen and (max-width: 600px)").matches) {
+if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
     TouchManager.init(gameCanvas);
     getInput = () => ({
         up: TouchManager.up,
